@@ -8,15 +8,20 @@ $w_first_call: 150px;
   color: $font_blue;
 }
 
-.header_timeline {
-  position: relative;
-
+.timeline {
   display: grid;
   grid-auto-flow: column;
   grid-column-gap: 5px;
 
-  height: 40px;
-  margin-left: $w_first_call;
+  @media (max-width: $mobile_breakpoint) {
+    grid-template-columns: repeat(11, 50px);
+  }
+}
+
+.header_timeline {
+  @extend .timeline;
+
+  position: relative;
 
   .time {
     & > span {
@@ -30,7 +35,7 @@ $w_first_call: 150px;
     &::before {
       position: absolute;
       right: -4px;
-      bottom: 0;
+      bottom: -14px;
       display: block;
       content: '';
       background-color: $gray1;
@@ -43,7 +48,7 @@ $w_first_call: 150px;
     &::after {
       position: absolute;
       left: 50%;
-      bottom: 0;
+      bottom: -14px;
       display: block;
       content: '';
       background-color: $gray1;
@@ -57,7 +62,7 @@ $w_first_call: 150px;
   &::before {
     position: absolute;
     left: 0;
-    bottom: 0;
+    bottom: -14px;
     display: block;
     content: '';
     background-color: $gray1;
@@ -70,21 +75,34 @@ $w_first_call: 150px;
 
 .table {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-auto-rows: $h_row;
+  grid-template-columns: $w_first_call 1fr;
 
   & > div {
-    padding: 10px 0;
+    & > .row {
+      padding: 10px 0;
+    }
+
+    & > * + * {
+      border-top: 1px solid $gray1;
+    }
   }
 
-  & > * + * {
-    border-top: 1px solid $gray1;
+  @media (max-width: $mobile_breakpoint) {
+    & > div:nth-child(2) {
+      overflow-x: auto;
+
+      .row {
+        width: max-content;
+      }
+    }
   }
 
   .row {
     display: grid;
-    grid-template-columns: $w_first_call 1fr;
+    grid-template-columns: 1fr;
     align-content: center;
+
+    height: $h_row;
 
     .label {
       font-weight: 700;
@@ -95,9 +113,7 @@ $w_first_call: 150px;
     }
 
     .timeline {
-      display: grid;
-      grid-auto-flow: column;
-      grid-column-gap: 5px;
+      height: 30px;
 
       .item {
         height: 100%;

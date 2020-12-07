@@ -2,12 +2,17 @@
 
 .container {
   height: 100vh;
-  width: 900px;
 
-  padding: 32px;
+  padding: 16px;
 
   .buttonBack {
     margin-bottom: 10px;
+  }
+
+  .buttonShow {
+    @media (max-width: $mobile_breakpoint) {
+      width: 100%;
+    }
   }
 
   .title {
@@ -15,7 +20,6 @@
     align-items: center;
 
     margin-bottom: 10px;
-
 
     & > * + * {
       margin-left: 16px;

@@ -49,7 +49,9 @@ export const WorkSchedule: FC = () => {
           зависимости от погодных условий и графика регламентных работ
         </div>
 
-        <Button type="primary">Посмотреть номера</Button>
+        <Button type="primary" className={styles.buttonShow}>
+          Посмотреть номера
+        </Button>
       </div>
 
       <Modal
