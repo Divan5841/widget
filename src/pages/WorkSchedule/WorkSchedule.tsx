@@ -1,15 +1,20 @@
 import React, { FC, useCallback, useState } from 'react'
-import { ArrowLeftOutlined, CalendarOutlined } from '@ant-design/icons'
-import { Button, Calendar, ConfigProvider, Modal, Tabs } from 'antd'
+import {
+  ArrowLeftOutlined,
+  CalendarOutlined,
+  LeftOutlined,
+  RightOutlined,
+} from '@ant-design/icons'
+import { Button, ConfigProvider, Modal, Tabs } from 'antd'
+import { TabsProps } from 'antd/es/tabs'
 import ru_RU from 'antd/lib/locale-provider/ru_RU'
-import moment, { Moment } from 'moment'
-// import 'moment/locale/ru'
+import moment from 'moment'
+import Calendar from 'react-calendar'
 
 import { TableServices } from './components/TableServices/TableServices'
 import { ENTERTAINMENTS, SERVICES } from '../../__moks__/entertainments'
 import styles from './WorkSchedule.module.scss'
-
-// moment.locale('ru')
+import './../../utils/calendar.scss'
 
 export const START_WORK_TIME = 11
 export const END_WORK_TIME = 22
@@ -17,18 +22,18 @@ export const END_WORK_TIME = 22
 export const WorkSchedule: FC = () => {
   const [isDatePrickerOpen, setIsDatePrickerOpen] = useState(false)
 
-  const [preSelectedDate, setPreSelectedDate] = useState<Moment>(moment())
-  const [selectedDate, setSelectedDate] = useState<Moment>(moment())
+  const [selectedDate, setSelectedDate] = useState<Date | Date[]>(new Date())
 
-  const onAcceptHandler = useCallback(() => {
-    setSelectedDate(preSelectedDate)
+  const onAcceptHandler = useCallback((date: Date | Date[]) => {
+    setSelectedDate(date)
     setIsDatePrickerOpen(false)
-  }, [preSelectedDate])
+  }, [])
 
-  const onCancelHandler = useCallback(() => {
-    setPreSelectedDate(selectedDate)
-    setIsDatePrickerOpen(false)
-  }, [selectedDate])
+  const onChangeTabHandler: TabsProps['onChange'] = useCallback((activeKey) => {
+    if (activeKey === 'today') {
+      setSelectedDate(new Date())
+    }
+  }, [])
 
   return (
     <>
@@ -40,7 +45,7 @@ export const WorkSchedule: FC = () => {
         <div className={styles.title}>
           <span>Режим работы</span>
 
-          <span>{selectedDate.format('D MMM YYYY')}</span>
+          <span>{moment(selectedDate as Date).format('D MMM YYYY')}</span>
 
           <Button
             icon={<CalendarOutlined />}
@@ -48,6 +53,11 @@ export const WorkSchedule: FC = () => {
             type="primary"
           />
         </div>
+
+        <Tabs size="large" onChange={onChangeTabHandler}>
+          <Tabs.TabPane tab="Сегодня" key="today" />
+          <Tabs.TabPane tab="Весь год" key="allYear" />
+        </Tabs>
 
         <Tabs destroyInactiveTabPane>
           <Tabs.TabPane tab="Сервисы" key="services">
@@ -71,17 +81,22 @@ export const WorkSchedule: FC = () => {
 
       <Modal
         visible={isDatePrickerOpen}
-        cancelText="Отмена"
-        onCancel={onCancelHandler}
-        onOk={onAcceptHandler}
+        onCancel={() => setIsDatePrickerOpen(false)}
+        width="min-content"
+        footer={null}
         closable={false}
         destroyOnClose
       >
         <ConfigProvider locale={ru_RU}>
           <Calendar
-            fullscreen={false}
-            onSelect={setPreSelectedDate}
-            value={preSelectedDate}
+            onChange={onAcceptHandler}
+            value={selectedDate}
+            locale="ru"
+            prev2Label={null}
+            next2Label={null}
+            prevLabel={<LeftOutlined />}
+            nextLabel={<RightOutlined />}
+            formatMonthYear={(locale, date) => moment(date).format('MMMM YYYY')}
           />
         </ConfigProvider>
       </Modal>

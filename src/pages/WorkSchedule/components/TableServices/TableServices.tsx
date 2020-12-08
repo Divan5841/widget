@@ -24,7 +24,7 @@ export const TableServices: FC<ITableServicesProps> = ({ services }) => (
         ))}
       </div>
 
-      <div>
+      <div className={styles.timelines}>
         <div className={styles.row}>
           <div className={styles.header_timeline}>
             {getRangeArray(START_WORK_TIME + 1, END_WORK_TIME).map((time) => (

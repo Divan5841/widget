@@ -72,8 +72,21 @@ $w_timeline_call: 60px;
 }
 
 .table {
+  position: relative;
   display: grid;
   grid-template-columns: $w_first_call max-content;
+
+  &::before {
+    position: absolute;
+    display: block;
+    content: '';
+    bottom: 0;
+    left: calc(#{$w_first_call} + 100px);
+
+    width: 4px;
+    height: 80%;
+    background-color: white;
+  }
 
   & > div {
     & > .row {
@@ -88,7 +101,7 @@ $w_timeline_call: 60px;
   @media (max-width: $breakpoint) {
     grid-template-columns: $w_first_call 1fr;
 
-    & > div:nth-child(2) {
+    & > .timelines {
       overflow-x: auto;
 
       .row {
