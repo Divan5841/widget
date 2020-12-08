@@ -2,6 +2,7 @@
 
 $h_row: 50px;
 $w_first_call: 150px;
+$w_timeline_call: 60px;
 
 .container {
   padding: 8px;
@@ -10,12 +11,9 @@ $w_first_call: 150px;
 
 .timeline {
   display: grid;
+  grid-template-columns: repeat(11, $w_timeline_call);
   grid-auto-flow: column;
   grid-column-gap: 5px;
-
-  @media (max-width: $mobile_breakpoint) {
-    grid-template-columns: repeat(11, 50px);
-  }
 }
 
 .header_timeline {
@@ -75,7 +73,7 @@ $w_first_call: 150px;
 
 .table {
   display: grid;
-  grid-template-columns: $w_first_call 1fr;
+  grid-template-columns: $w_first_call max-content;
 
   & > div {
     & > .row {
@@ -87,7 +85,9 @@ $w_first_call: 150px;
     }
   }
 
-  @media (max-width: $mobile_breakpoint) {
+  @media (max-width: $breakpoint) {
+    grid-template-columns: $w_first_call 1fr;
+
     & > div:nth-child(2) {
       overflow-x: auto;
 

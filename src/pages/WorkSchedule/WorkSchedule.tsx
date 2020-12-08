@@ -1,11 +1,15 @@
 import React, { FC, useCallback, useState } from 'react'
 import { ArrowLeftOutlined, CalendarOutlined } from '@ant-design/icons'
-import { Button, Calendar, Modal, Tabs, ConfigProvider } from 'antd'
+import { Button, Calendar, ConfigProvider, Modal, Tabs } from 'antd'
 import ru_RU from 'antd/lib/locale-provider/ru_RU'
+import moment, { Moment } from 'moment'
+// import 'moment/locale/ru'
 
 import { TableServices } from './components/TableServices/TableServices'
 import { ENTERTAINMENTS, SERVICES } from '../../__moks__/entertainments'
 import styles from './WorkSchedule.module.scss'
+
+// moment.locale('ru')
 
 export const START_WORK_TIME = 11
 export const END_WORK_TIME = 22
@@ -13,9 +17,18 @@ export const END_WORK_TIME = 22
 export const WorkSchedule: FC = () => {
   const [isDatePrickerOpen, setIsDatePrickerOpen] = useState(false)
 
-  const onSelectDate = useCallback((value) => {
-    console.log('value', value)
-  }, [])
+  const [preSelectedDate, setPreSelectedDate] = useState<Moment>(moment())
+  const [selectedDate, setSelectedDate] = useState<Moment>(moment())
+
+  const onAcceptHandler = useCallback(() => {
+    setSelectedDate(preSelectedDate)
+    setIsDatePrickerOpen(false)
+  }, [preSelectedDate])
+
+  const onCancelHandler = useCallback(() => {
+    setPreSelectedDate(selectedDate)
+    setIsDatePrickerOpen(false)
+  }, [selectedDate])
 
   return (
     <>
@@ -26,6 +39,8 @@ export const WorkSchedule: FC = () => {
 
         <div className={styles.title}>
           <span>Режим работы</span>
+
+          <span>{selectedDate.format('D MMM YYYY')}</span>
 
           <Button
             icon={<CalendarOutlined />}
@@ -57,13 +72,17 @@ export const WorkSchedule: FC = () => {
       <Modal
         visible={isDatePrickerOpen}
         cancelText="Отмена"
-        onCancel={() => setIsDatePrickerOpen(false)}
-        onOk={() => setIsDatePrickerOpen(false)}
+        onCancel={onCancelHandler}
+        onOk={onAcceptHandler}
         closable={false}
         destroyOnClose
       >
         <ConfigProvider locale={ru_RU}>
-          <Calendar fullscreen={false} onSelect={onSelectDate} />
+          <Calendar
+            fullscreen={false}
+            onSelect={setPreSelectedDate}
+            value={preSelectedDate}
+          />
         </ConfigProvider>
       </Modal>
     </>
