@@ -3,39 +3,68 @@
 .container {
   height: 100vh;
   max-width: 910px;
-  padding: 16px;
+  padding: 12px;
 
   .buttonBack {
+    display: flex;
+    align-items: center;
+
+    & > * + * {
+      margin-left: 10px;
+    }
+
+    font-size: 12px;
+    font-weight: 700;
+    color: $gray2;
+
     margin-bottom: 10px;
   }
 
   .buttonShow {
+    font-weight: 700;
+
     @media (max-width: $mobile_breakpoint) {
       width: 100%;
     }
   }
 
   .title {
-    display: flex;
-    align-items: center;
+    margin-bottom: 16px;
 
-    flex-wrap: wrap;
+    font-size: 30px;
+    font-weight: 500;
+    color: $font_blue;
+  }
 
-    margin-bottom: 10px;
+  .mainTabs > div:first-child > div:first-child {
+    @media (max-width: $mobile_breakpoint) {
+      justify-content: center;
 
-    & > *:not(:last-child) {
-      margin-right: 16px;
+      & > div > :nth-child(2) {
+        margin: 0;
+      }
     }
 
-    & > span {
-      font-size: 32px;
-      color: $font_blue;
+    & > div > div {
+      font-size: 26px !important;
+      font-weight: 500;
+      color: $gray2;
     }
   }
 
-  .tab {
-    color: orange;
-    font-size: 24px;
+  .tabs > div:first-child > div:first-child > div {
+    & > div > div {
+      font-weight: 700;
+      color: $gray2;
+    }
+
+    & > div > div[aria-selected='true'] {
+      color: $pumpkin;
+    }
+
+    & > div:last-child {
+      background: $pumpkin;
+    }
   }
 
   .mark {
@@ -46,5 +75,22 @@
 
     font-size: 14px;
     color: $font_blue;
+
+    @media (max-width: $mobile_breakpoint) {
+      margin: 0;
+    }
   }
+}
+
+.modal {
+  & > div:nth-child(2) {
+    border-radius: 16px;
+  }
+}
+
+.buttonCross {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
 }
