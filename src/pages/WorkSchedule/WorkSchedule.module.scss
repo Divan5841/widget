@@ -2,7 +2,7 @@
 
 .container {
   height: 100vh;
-  max-width: 910px;
+  //max-width: 910px;
   padding: 12px;
 
   .buttonBack {
@@ -82,15 +82,6 @@
   }
 }
 
-.modal {
-  & > div:nth-child(2) {
-    border-radius: 16px;
-  }
-}
-
-.buttonCross {
-  position: fixed;
-  top: 30px;
-  right: 30px;
-  cursor: pointer;
+.loader {
+  height: 100px !important;
 }

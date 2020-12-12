@@ -1,40 +1,67 @@
-import React, { FC, useCallback, useState } from 'react'
-import { Button, ConfigProvider, Modal, Tabs } from 'antd'
+import React, { FC, useCallback, useEffect, useState } from 'react'
+import { Button, Tabs } from 'antd'
 import { TabsProps } from 'antd/es/tabs'
-import ru_RU from 'antd/lib/locale-provider/ru_RU'
-import moment from 'moment'
-import Calendar from 'react-calendar'
 
+import { ENTERTAINMENTS } from '../../__moks__/entertainments'
 import { TableServices } from './components/TableServices/TableServices'
-import { ENTERTAINMENTS, SERVICES } from '../../__moks__/entertainments'
-import { ArrowLeftS, CalendarIcon, Cross, Left, Right } from '../../utils/icons'
+import { TimelinesTable } from './components/Services/TimelinesTable'
+import { Calendar, Empty, Loader } from '../../components'
+import {
+  ArrowLeftS,
+  CalendarIcon,
+  isEmpty,
+  Timeline,
+  useTimelines,
+} from '../../utils'
 import styles from './WorkSchedule.module.scss'
-import './../../utils/calendar.scss'
 
 export const START_WORK_TIME = 11
 export const END_WORK_TIME = 22
 
+const MAIN_TAB_KEY = {
+  TODAY: 'сегодня',
+  ALL_YEAR: 'весь год',
+}
+
+const TODAY = new Date()
+
 export const WorkSchedule: FC = () => {
-  const [isDatePrickerOpen, setIsDatePrickerOpen] = useState(false)
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false)
   const [isShowCalendarIcon, setIsShowCalendarIcon] = useState(false)
 
-  const [selectedDate, setSelectedDate] = useState<Date | Date[]>(new Date())
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(TODAY)
 
-  const onAcceptHandler = useCallback((date: Date | Date[]) => {
+  const onSelectDateHandler = useCallback((date: Date) => {
     setSelectedDate(date)
-    setIsDatePrickerOpen(false)
+    setIsCalendarOpen(false)
   }, [])
 
   const onChangeMainTabHandler: TabsProps['onChange'] = useCallback(
     (activeKey) => {
-      if (activeKey === 'today') {
-        setSelectedDate(new Date())
+      if (activeKey === MAIN_TAB_KEY.TODAY) {
+        setSelectedDate(TODAY)
+      } else {
+        setSelectedDate(undefined)
       }
 
-      setIsShowCalendarIcon(activeKey !== 'today')
+      setIsShowCalendarIcon(activeKey !== MAIN_TAB_KEY.TODAY)
     },
     [],
   )
+
+  const [timelines, isLoading] = useTimelines(selectedDate)
+  const [services, setServices] = useState<Timeline[]>([])
+  const [fun, setFun] = useState<Timeline[]>([])
+
+  useEffect(() => {
+    if (!timelines) return
+
+    const services = timelines.filter(({ type }) => type === 'services')
+    setServices(services)
+
+    const fun = timelines.filter(({ type }) => type === 'fun')
+    setFun(fun)
+  }, [timelines])
 
   return (
     <>
@@ -49,8 +76,14 @@ export const WorkSchedule: FC = () => {
         </div>
 
         <Tabs onChange={onChangeMainTabHandler} className={styles.mainTabs}>
-          <Tabs.TabPane tab="СЕГОДНЯ" key="today" />
-          <Tabs.TabPane tab="ВЕСЬ ГОД" key="allYear" />
+          <Tabs.TabPane
+            tab={MAIN_TAB_KEY.TODAY.toUpperCase()}
+            key={MAIN_TAB_KEY.TODAY}
+          />
+          <Tabs.TabPane
+            tab={MAIN_TAB_KEY.ALL_YEAR.toUpperCase()}
+            key={MAIN_TAB_KEY.ALL_YEAR}
+          />
         </Tabs>
 
         <Tabs
@@ -60,7 +93,7 @@ export const WorkSchedule: FC = () => {
             right: isShowCalendarIcon ? (
               <Button
                 icon={<CalendarIcon />}
-                onClick={() => setIsDatePrickerOpen(true)}
+                onClick={() => setIsCalendarOpen(true)}
                 type="primary"
               />
             ) : (
@@ -69,7 +102,13 @@ export const WorkSchedule: FC = () => {
           }}
         >
           <Tabs.TabPane tab="СЕРВИСЫ" key="services">
-            <TableServices services={SERVICES} />
+            {isLoading ? (
+              <Loader className={styles.loader} />
+            ) : isEmpty(services) || !services ? (
+              <Empty />
+            ) : (
+              <TimelinesTable timelines={services} />
+            )}
           </Tabs.TabPane>
 
           <Tabs.TabPane tab="РАЗВЛЕЧЕНИЯ" key="entertainments">
@@ -87,39 +126,12 @@ export const WorkSchedule: FC = () => {
         </Button>
       </div>
 
-      <Modal
-        visible={isDatePrickerOpen}
-        onCancel={() => setIsDatePrickerOpen(false)}
-        width="min-content"
-        footer={null}
-        closable={false}
-        destroyOnClose
-        maskStyle={{ background: '#232E43' }}
-        className={styles.modal}
-        centered
-      >
-        <div
-          className={styles.buttonCross}
-          onClick={() => setIsDatePrickerOpen(false)}
-        >
-          <Cross />
-        </div>
-
-        <ConfigProvider locale={ru_RU}>
-          <Calendar
-            onChange={onAcceptHandler}
-            value={selectedDate}
-            locale="ru"
-            prev2Label={null}
-            next2Label={null}
-            prevLabel={<Left />}
-            nextLabel={<Right />}
-            formatMonthYear={(locale, date) =>
-              moment(date).format('MMMM, YYYY')
-            }
-          />
-        </ConfigProvider>
-      </Modal>
+      <Calendar
+        isOpen={isCalendarOpen}
+        onClose={() => setIsCalendarOpen(false)}
+        date={selectedDate}
+        onSelectDate={onSelectDateHandler}
+      />
     </>
   )
 }

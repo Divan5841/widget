@@ -1,0 +1,97 @@
+@import 'src/utils/assets';
+
+$h_row: 50px;
+$w_first_call: 140px;
+$w_timeline_call: 42px;
+
+.table {
+  position: relative;
+
+  //timeline vertical
+  &::before {
+    position: absolute;
+    display: block;
+    content: '';
+    bottom: 15px;
+    left: calc(#{$w_first_call} + 100px);
+
+    width: 3px;
+    height: 80%;
+    background-color: $light_blue;
+  }
+
+  display: grid;
+  grid-template-columns: $w_first_call 1fr;
+
+  & > div:last-child {
+    overflow-y: auto;
+  }
+
+  .row {
+    height: $h_row;
+    padding: 10px 0;
+
+    &:not(:first-child) {
+      border-top: 1px solid $gray1;
+    }
+  }
+
+  .label {
+    @extend .row;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    align-content: center;
+
+    padding-left: 12px;
+    padding-right: 4px;
+
+    font-weight: 700;
+    color: $font_blue;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .timeline {
+    @extend .row;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: $w_timeline_call;
+    grid-column-gap: 6px;
+
+    width: max-content;
+
+    padding: 10px 26px;
+
+    .item {
+      background-color: $gray1;
+
+      &Working {
+        background-color: $blue;
+      }
+
+      &Lunch {
+        background-color: $pumpkin;
+      }
+    }
+  }
+
+  .headerTimeline {
+    @extend .timeline;
+
+    padding: 0 0 0 26px;
+    height: 30px;
+
+    transform: translateX(-23px);
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    color: $gray1;
+  }
+}

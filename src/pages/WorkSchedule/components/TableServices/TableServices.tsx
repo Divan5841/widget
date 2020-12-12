@@ -4,7 +4,7 @@ import { Tooltip } from 'antd'
 
 import { IEntertainment } from '../../../../__moks__/entertainments'
 import { END_WORK_TIME, START_WORK_TIME } from '../../WorkSchedule'
-import { getRangeArray } from '../../../../utils/helpers'
+import { getRangeArray } from '../../../../utils'
 import styles from './TableServices.module.scss'
 
 interface ITableServicesProps {

@@ -1,0 +1,12 @@
+.modal {
+  & > div:nth-child(2) {
+    border-radius: 16px;
+  }
+}
+
+.buttonCross {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+}
