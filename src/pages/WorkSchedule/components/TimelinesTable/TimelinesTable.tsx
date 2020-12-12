@@ -2,8 +2,9 @@ import React, { FC } from 'react'
 import clsx from 'clsx'
 import moment from 'moment'
 
-import { TimelinesTooltip } from './Tooltip/TimelinesTooltip'
-import { getRangeArray, Timeline, TimelineIcon } from '../../../../utils'
+import { TimelinesTooltip } from './TimelinesTooltip/TimelinesTooltip'
+import { getRangeArray, TimelineIcon } from '../../../../utils'
+import { Timeline } from '../../store'
 import styles from './TimelinesTable.module.scss'
 
 interface ITimelinesTableProps {

@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Tooltip } from 'antd'
 
-import { Schedule, SCHEDULE_STATUS_TRANSLATE } from '../../../../../utils'
+import { Schedule, SCHEDULE_STATUS_TRANSLATE } from '../../../store'
 
 interface ITimelinesTooltipProps {
   status: Schedule['status']

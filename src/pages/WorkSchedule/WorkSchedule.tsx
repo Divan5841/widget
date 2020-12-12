@@ -4,15 +4,10 @@ import { TabsProps } from 'antd/es/tabs'
 
 import { ENTERTAINMENTS } from '../../__moks__/entertainments'
 import { TableServices } from './components/TableServices/TableServices'
-import { TimelinesTable } from './components/Services/TimelinesTable'
+import { TimelinesTable } from './components/TimelinesTable/TimelinesTable'
 import { Calendar, Empty, Loader } from '../../components'
-import {
-  ArrowLeftS,
-  CalendarIcon,
-  isEmpty,
-  Timeline,
-  useTimelines,
-} from '../../utils'
+import { Timeline, useTimelines } from './store'
+import { ArrowLeftS, CalendarIcon, isEmpty } from '../../utils'
 import styles from './WorkSchedule.module.scss'
 
 export const START_WORK_TIME = 11
