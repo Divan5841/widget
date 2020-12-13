@@ -2,9 +2,10 @@ import React, { FC, useCallback, useEffect, useState } from 'react'
 import { Button, Tabs } from 'antd'
 import { TabsProps } from 'antd/es/tabs'
 
-import { ENTERTAINMENTS } from '../../__moks__/entertainments'
-import { TableServices } from './components/TableServices/TableServices'
-import { TimelinesTable } from './components/TimelinesTable/TimelinesTable'
+import {
+  TimelinesTable,
+  TimelinesType,
+} from './components/TimelinesTable/TimelinesTable'
 import { Calendar, Empty, Loader } from '../../components'
 import { Timeline, useTimelines } from './store'
 import { ArrowLeftS, CalendarIcon, isEmpty } from '../../utils'
@@ -25,6 +26,7 @@ export const WorkSchedule: FC = () => {
   const [isShowCalendarIcon, setIsShowCalendarIcon] = useState(false)
 
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(TODAY)
+  const [timelinesType, setTimelinesType] = useState<TimelinesType>('day')
 
   const onSelectDateHandler = useCallback((date: Date) => {
     setSelectedDate(date)
@@ -56,6 +58,8 @@ export const WorkSchedule: FC = () => {
 
     const fun = timelines.filter(({ type }) => type === 'fun')
     setFun(fun)
+
+    setTimelinesType(selectedDate ? 'day' : 'year')
   }, [timelines])
 
   return (
@@ -102,12 +106,18 @@ export const WorkSchedule: FC = () => {
             ) : isEmpty(services) || !services ? (
               <Empty />
             ) : (
-              <TimelinesTable timelines={services} />
+              <TimelinesTable timelines={services} type={timelinesType} />
             )}
           </Tabs.TabPane>
 
           <Tabs.TabPane tab="РАЗВЛЕЧЕНИЯ" key="entertainments">
-            <TableServices services={ENTERTAINMENTS} />
+            {isLoading ? (
+              <Loader className={styles.loader} />
+            ) : isEmpty(fun) || !fun ? (
+              <Empty />
+            ) : (
+              <TimelinesTable timelines={fun} type={timelinesType} />
+            )}
           </Tabs.TabPane>
         </Tabs>
 

@@ -18,7 +18,6 @@ export const TimelinesTooltip: FC<ITimelinesTooltipProps> = ({
       </span>
     }
     color="#f5fbff"
-    arrowPointAtCenter
     destroyTooltipOnHide
   >
     {children}

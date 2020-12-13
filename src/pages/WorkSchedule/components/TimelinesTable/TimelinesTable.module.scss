@@ -18,6 +18,10 @@ $w_timeline_call: 42px;
     width: 3px;
     height: 80%;
     background-color: $light_blue;
+
+    @media (max-width: $mobile_breakpoint) {
+      bottom: 0;
+    }
   }
 
   display: grid;
