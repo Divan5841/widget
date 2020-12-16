@@ -2,8 +2,8 @@
 
 .container {
   height: 100vh;
-  //max-width: 910px;
-  padding: 12px;
+  padding-bottom: 70px;
+  overflow-y: auto;
 
   .buttonBack {
     display: flex;
@@ -17,19 +17,22 @@
     font-weight: 700;
     color: $gray2;
 
-    margin-bottom: 10px;
+    margin: 16px 16px 8px;
   }
 
   .buttonShow {
     font-weight: 700;
 
     @media (max-width: $mobile_breakpoint) {
+      position: fixed;
+      bottom: 0;
+      height: 70px;
       width: 100%;
     }
   }
 
   .title {
-    margin-bottom: 16px;
+    margin: 0 16px 16px;
 
     font-size: 30px;
     font-weight: 500;
@@ -40,8 +43,20 @@
     @media (max-width: $mobile_breakpoint) {
       justify-content: center;
 
-      & > div > :nth-child(2) {
+      & > div > div {
         margin: 0;
+      }
+    }
+
+    & > div {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      justify-items: stretch;
+      gap: 6px;
+
+      & > div {
+        justify-content: center;
       }
     }
 
@@ -52,28 +67,32 @@
     }
   }
 
-  .tabs > div:first-child > div:first-child > div {
-    & > div > div {
-      font-weight: 700;
-      color: $gray2;
-    }
+  .tabs > div:first-child {
+    padding: 0 12px;
 
-    & > div > div[aria-selected='true'] {
-      color: $pumpkin;
-    }
+    & > div:first-child > div {
+      & > div > div {
+        font-weight: 700;
+        color: $gray2;
+      }
 
-    & > div:last-child {
-      background: $pumpkin;
+      & > div > div[aria-selected='true'] {
+        color: $pumpkin;
+      }
+
+      & > div:last-child {
+        background: $pumpkin;
+      }
     }
   }
 
   .mark {
     margin-bottom: 16px;
-    padding: 16px 24px;
+    padding: 8px 12px;
 
     background-color: $light_blue;
 
-    font-size: 14px;
+    font-size: 10px;
     color: $font_blue;
 
     @media (max-width: $mobile_breakpoint) {

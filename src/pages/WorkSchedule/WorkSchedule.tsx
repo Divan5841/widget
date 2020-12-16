@@ -24,6 +24,7 @@ const TODAY = new Date()
 export const WorkSchedule: FC = () => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
   const [isShowCalendarIcon, setIsShowCalendarIcon] = useState(false)
+  const [isShowButtonShow, setIsShowButtonShow] = useState(false)
 
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(TODAY)
   const [timelinesType, setTimelinesType] = useState<TimelinesType>('day')
@@ -42,6 +43,7 @@ export const WorkSchedule: FC = () => {
       }
 
       setIsShowCalendarIcon(activeKey !== MAIN_TAB_KEY.TODAY)
+      setIsShowButtonShow(activeKey !== MAIN_TAB_KEY.TODAY)
     },
     [],
   )
@@ -126,9 +128,11 @@ export const WorkSchedule: FC = () => {
           зависимости от погодных условий и графика регламентных работ
         </div>
 
-        <Button type="primary" size="large" className={styles.buttonShow}>
-          Посмотреть номера
-        </Button>
+        {isShowButtonShow && (
+          <Button type="primary" size="large" className={styles.buttonShow}>
+            Посмотреть номера
+          </Button>
+        )}
       </div>
 
       <Calendar
