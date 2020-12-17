@@ -13,7 +13,7 @@ $w_timeline_call: 42px;
     display: block;
     content: '';
     bottom: 15px;
-    left: calc(#{$w_first_call} + 100px);
+    left: calc(#{$w_first_call} + 71px);
 
     width: 3px;
     height: 80%;
@@ -29,14 +29,15 @@ $w_timeline_call: 42px;
 
   & > div:last-child {
     overflow-y: auto;
+    scroll-behavior: smooth;
   }
 
   .row {
     height: $h_row;
     padding: 10px 0;
 
-    &:not(:first-child) {
-      border-top: 1px solid $gray1;
+    &:not(:last-child) {
+      border-bottom: 1px solid $gray1;
     }
   }
 
@@ -97,5 +98,12 @@ $w_timeline_call: 42px;
     }
 
     color: $gray1;
+
+    &Empty {
+      @extend .headerTimeline;
+
+      width: 100%;
+      transform: none;
+    }
   }
 }

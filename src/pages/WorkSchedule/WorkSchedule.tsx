@@ -11,9 +11,6 @@ import { Timeline, useTimelines } from './store'
 import { ArrowLeftS, CalendarIcon, isEmpty } from '../../utils'
 import styles from './WorkSchedule.module.scss'
 
-export const START_WORK_TIME = 11
-export const END_WORK_TIME = 22
-
 const MAIN_TAB_KEY = {
   TODAY: 'сегодня',
   ALL_YEAR: 'весь год',
@@ -27,10 +24,11 @@ export const WorkSchedule: FC = () => {
   const [isShowButtonShow, setIsShowButtonShow] = useState(false)
 
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(TODAY)
+  const [dateTimeline, setDateTimeline] = useState<Date | undefined>(TODAY)
   const [timelinesType, setTimelinesType] = useState<TimelinesType>('day')
 
   const onSelectDateHandler = useCallback((date: Date) => {
-    setSelectedDate(date)
+    setDateTimeline(date)
     setIsCalendarOpen(false)
   }, [])
 
@@ -42,6 +40,7 @@ export const WorkSchedule: FC = () => {
         setSelectedDate(undefined)
       }
 
+      setDateTimeline(undefined)
       setIsShowCalendarIcon(activeKey !== MAIN_TAB_KEY.TODAY)
       setIsShowButtonShow(activeKey !== MAIN_TAB_KEY.TODAY)
     },
@@ -108,7 +107,7 @@ export const WorkSchedule: FC = () => {
             ) : isEmpty(services) || !services ? (
               <Empty />
             ) : (
-              <TimelinesTable timelines={services} type={timelinesType} />
+              <TimelinesTable timelines={services} type={timelinesType} dateTimeline={dateTimeline}/>
             )}
           </Tabs.TabPane>
 
@@ -118,7 +117,7 @@ export const WorkSchedule: FC = () => {
             ) : isEmpty(fun) || !fun ? (
               <Empty />
             ) : (
-              <TimelinesTable timelines={fun} type={timelinesType} />
+              <TimelinesTable timelines={fun} type={timelinesType} dateTimeline={dateTimeline}/>
             )}
           </Tabs.TabPane>
         </Tabs>
@@ -138,7 +137,7 @@ export const WorkSchedule: FC = () => {
       <Calendar
         isOpen={isCalendarOpen}
         onClose={() => setIsCalendarOpen(false)}
-        date={selectedDate}
+        date={dateTimeline}
         onSelectDate={onSelectDateHandler}
       />
     </>

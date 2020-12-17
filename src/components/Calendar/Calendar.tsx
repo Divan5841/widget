@@ -11,7 +11,7 @@ import './Calendar.scss'
 interface ICalendarProps {
   isOpen: boolean
   onClose: () => void
-  date: Date | undefined
+  date?: Date
   onSelectDate: (date: Date) => void
 }
 

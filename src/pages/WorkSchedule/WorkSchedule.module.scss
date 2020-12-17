@@ -21,6 +21,8 @@
   }
 
   .buttonShow {
+    margin-left: 16px;
+
     font-weight: 700;
 
     @media (max-width: $mobile_breakpoint) {
@@ -28,6 +30,7 @@
       bottom: 0;
       height: 70px;
       width: 100%;
+      margin: 0;
     }
   }
 
@@ -40,30 +43,20 @@
   }
 
   .mainTabs > div:first-child > div:first-child {
-    @media (max-width: $mobile_breakpoint) {
-      justify-content: center;
-
-      & > div > div {
-        margin: 0;
-      }
-    }
-
     & > div {
       width: 100%;
       display: grid;
       grid-template-columns: 1fr 1fr;
       justify-items: stretch;
-      gap: 6px;
 
       & > div {
         justify-content: center;
-      }
-    }
+        margin: 0;
 
-    & > div > div {
-      font-size: 26px !important;
-      font-weight: 500;
-      color: $gray2;
+        font-size: 26px !important;
+        font-weight: 500;
+        color: $gray2;
+      }
     }
   }
 

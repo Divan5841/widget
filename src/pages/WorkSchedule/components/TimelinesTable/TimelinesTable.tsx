@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react'
+import React, { FC, useEffect, useMemo } from 'react'
 import clsx from 'clsx'
 import moment from 'moment'
 
@@ -7,16 +7,21 @@ import { getRangeArray, OneTime, TimelineIcon } from '../../../../utils'
 import { Timeline } from '../../store'
 import styles from './TimelinesTable.module.scss'
 
+const TIMELINE_ID = 'timelineId'
+const TIMELINE_CALL_WIDTH = 48
+
 export type TimelinesType = 'day' | 'year'
 
 interface ITimelinesTableProps {
   timelines: Timeline[]
   type: TimelinesType
+  dateTimeline?: Date
 }
 
 export const TimelinesTable: FC<ITimelinesTableProps> = ({
   timelines,
   type,
+  dateTimeline,
 }) => {
   const [timeline, getStyles] = useMemo(() => {
     if (type === 'day') {
@@ -35,11 +40,14 @@ export const TimelinesTable: FC<ITimelinesTableProps> = ({
     }
 
     if (type === 'year') {
-      const start = moment(timelines[0].schedule[0].from, 'DD:MM:YYYY')
+      const start = moment(
+        timelines[0].schedule[0].from,
+        'DD:MM:YYYY',
+      ).subtract('d', 1)
       const end = moment(
         timelines[0].schedule[timelines[0].schedule.length - 1].to,
         'DD:MM:YYYY',
-      )
+      ).add('d', 30)
       const dur = moment.duration(end.diff(start)).asDays()
 
       return [
@@ -50,13 +58,11 @@ export const TimelinesTable: FC<ITimelinesTableProps> = ({
           </div>
         )),
         (from: string, to: string) => {
-          const gridColumnStart = moment
-            .duration(moment(from, 'DD:MM:YYYY').diff(start))
-            .asDays() + 1
+          const gridColumnStart =
+            moment.duration(moment(from, 'DD:MM:YYYY').diff(start)).asDays() + 1
 
-          const gridColumnEnd = moment
-            .duration(moment(to, 'DD:MM:YYYY').diff(start))
-            .asDays() + 1
+          const gridColumnEnd =
+            moment.duration(moment(to, 'DD:MM:YYYY').diff(start)).asDays() + 1
 
           return {
             gridColumnStart,
@@ -69,17 +75,29 @@ export const TimelinesTable: FC<ITimelinesTableProps> = ({
     return [null, () => ({})]
   }, [timelines, type])
 
+  useEffect(() => {
+    const timeline = document.getElementById(TIMELINE_ID)
+
+    if (timeline && dateTimeline) {
+      const start = moment(timelines[0].schedule[0].from, 'DD:MM:YYYY')
+      const end = moment(dateTimeline, 'DD:MM:YYYY')
+      const dur = moment.duration(end.diff(start)).asDays()
+
+      setTimeout(() => (timeline.scrollLeft = TIMELINE_CALL_WIDTH * dur), 200)
+    }
+  }, [dateTimeline, timelines])
+
   return (
     <div className={styles.table}>
       <div>
-        <div className={styles.headerTimeline} />
+        <div className={styles.headerTimelineEmpty} />
 
         {timelines.map(({ name }) => (
           <div className={styles.label}>{name}</div>
         ))}
       </div>
 
-      <div>
+      <div id={TIMELINE_ID}>
         <div className={styles.headerTimeline}>{timeline}</div>
 
         {timelines.map(({ schedule }) => (
