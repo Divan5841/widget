@@ -7,3 +7,17 @@ $pumpkin: #d7a350;
 
 $mobile_breakpoint: 600px;
 $breakpoint: 900px;
+
+.clickable {
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.noClickable {
+  cursor: default;
+  &:hover {
+    opacity: 1;
+  }
+}

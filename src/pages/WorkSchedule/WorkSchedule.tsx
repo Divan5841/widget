@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useEffect, useState } from 'react'
 import { Button, Tabs } from 'antd'
 import { TabsProps } from 'antd/es/tabs'
+import moment from 'moment'
 
 import {
   TimelinesTable,
@@ -16,7 +17,7 @@ const MAIN_TAB_KEY = {
   ALL_YEAR: 'весь год',
 }
 
-const TODAY = new Date()
+const TODAY = new Date(moment().startOf('d').toISOString())
 
 export const WorkSchedule: FC = () => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
@@ -40,7 +41,7 @@ export const WorkSchedule: FC = () => {
         setSelectedDate(undefined)
       }
 
-      setDateTimeline(undefined)
+      setDateTimeline(TODAY)
       setIsShowCalendarIcon(activeKey !== MAIN_TAB_KEY.TODAY)
       setIsShowButtonShow(activeKey !== MAIN_TAB_KEY.TODAY)
     },
@@ -107,7 +108,11 @@ export const WorkSchedule: FC = () => {
             ) : isEmpty(services) || !services ? (
               <Empty />
             ) : (
-              <TimelinesTable timelines={services} type={timelinesType} dateTimeline={dateTimeline}/>
+              <TimelinesTable
+                timelines={services}
+                type={timelinesType}
+                dateTimeline={dateTimeline}
+              />
             )}
           </Tabs.TabPane>
 
@@ -117,7 +122,11 @@ export const WorkSchedule: FC = () => {
             ) : isEmpty(fun) || !fun ? (
               <Empty />
             ) : (
-              <TimelinesTable timelines={fun} type={timelinesType} dateTimeline={dateTimeline}/>
+              <TimelinesTable
+                timelines={fun}
+                type={timelinesType}
+                dateTimeline={dateTimeline}
+              />
             )}
           </Tabs.TabPane>
         </Tabs>

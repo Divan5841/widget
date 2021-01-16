@@ -11,9 +11,9 @@ export const Right: FC = () => (
     <path
       d="M11 20L17 14L11 8"
       stroke="#93A1BA"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 )
