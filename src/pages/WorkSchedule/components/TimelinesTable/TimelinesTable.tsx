@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo } from "react";
+import React, { FC, useCallback, useEffect, useMemo } from 'react'
 import clsx from 'clsx'
 import moment from 'moment'
 
@@ -76,8 +76,8 @@ export const TimelinesTable: FC<ITimelinesTableProps> = ({
   }, [timelines, type])
 
   const goTo = useCallback((url: string) => {
-    console.log('url', url);
-  },[])
+    console.log('url', url)
+  }, [])
 
   useEffect(() => {
     const timeline = document.getElementById(TIMELINE_ID)
@@ -87,40 +87,46 @@ export const TimelinesTable: FC<ITimelinesTableProps> = ({
       const end = moment(dateTimeline, 'DD:MM:YYYY')
       const dur = moment.duration(end.diff(start)).asDays()
 
-      setTimeout(() => (timeline.scrollLeft = TIMELINE_CALL_WIDTH * dur), 200)
+      timeline.scrollLeft = TIMELINE_CALL_WIDTH * dur
     }
   }, [dateTimeline, timelines])
 
   return (
-    <div className={styles.table}>
-      <div>
-        <div className={styles.headerTimelineEmpty} />
+    <div className={styles.container}>
+      <div className={styles.table} id={TIMELINE_ID}>
+        <div>
+          <div className={styles.headerTimelineEmpty} />
 
-        {timelines.map(({ name }, i) => (
-          <div className={styles.label} key={name + i}>
-            {name}
-          </div>
-        ))}
-      </div>
+          {timelines.map(({ name }, i) => (
+            <div className={styles.label} key={name + i}>
+              {name}
+            </div>
+          ))}
+        </div>
 
-      <div id={TIMELINE_ID}>
-        <div className={styles.headerTimeline}>{timeline}</div>
+        <div>
+          <div className={styles.headerTimeline}>{timeline}</div>
 
-        {timelines.map(({ schedule }, i) => (
-          <div className={styles.timeline} key={schedule.toString() + i} onClick={() => {}}>
-            {schedule.map(({ status, from, to }, i) => (
-              <TimelinesTooltip status={status} key={from + i}>
-                <div
-                  className={clsx(styles.item, {
-                    [styles.itemWorking]: status === 'opened',
-                    [styles.itemLunch]: status === 'lunch',
-                  })}
-                  style={getStyles(from, to)}
-                />
-              </TimelinesTooltip>
-            ))}
-          </div>
-        ))}
+          {timelines.map(({ schedule }, i) => (
+            <div
+              className={styles.timeline}
+              key={schedule.toString() + i}
+              onClick={() => {}}
+            >
+              {schedule.map(({ status, from, to }, i) => (
+                <TimelinesTooltip status={status} key={from + i}>
+                  <div
+                    className={clsx(styles.item, {
+                      [styles.itemWorking]: status === 'opened',
+                      [styles.itemLunch]: status === 'lunch',
+                    })}
+                    style={getStyles(from, to)}
+                  />
+                </TimelinesTooltip>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
