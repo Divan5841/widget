@@ -76,7 +76,7 @@ export const TimelinesTable: FC<ITimelinesTableProps> = ({
   }, [timelines, type])
 
   const goTo = useCallback((url: string) => {
-    console.log('url', url)
+    window.open(url, '_blank')
   }, [])
 
   useEffect(() => {
@@ -97,8 +97,12 @@ export const TimelinesTable: FC<ITimelinesTableProps> = ({
         <div>
           <div className={styles.headerTimelineEmpty} />
 
-          {timelines.map(({ name }, i) => (
-            <div className={styles.label} key={name + i}>
+          {timelines.map(({ name, url }, i) => (
+            <div
+              key={name + i}
+              onClick={() => goTo(url)}
+              className={styles.label}
+            >
               {name}
             </div>
           ))}
@@ -107,11 +111,11 @@ export const TimelinesTable: FC<ITimelinesTableProps> = ({
         <div>
           <div className={styles.headerTimeline}>{timeline}</div>
 
-          {timelines.map(({ schedule }, i) => (
+          {timelines.map(({ schedule, url }, i) => (
             <div
-              className={styles.timeline}
               key={schedule.toString() + i}
-              onClick={() => {}}
+              onClick={() => goTo(url)}
+              className={styles.timeline}
             >
               {schedule.map(({ status, from, to }, i) => (
                 <TimelinesTooltip status={status} key={from + i}>

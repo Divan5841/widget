@@ -27,6 +27,7 @@ export interface Timeline {
   type: 'services' | 'fun'
   name: string
   schedule: Schedule[]
+  url: string
 }
 
 export type IGetTimelinesResponse = Timeline[]
