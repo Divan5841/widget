@@ -40,14 +40,11 @@ export const TimelinesTable: FC<ITimelinesTableProps> = ({
     }
 
     if (type === 'year') {
-      const start = moment(
-        timelines[0].schedule[0].from,
-        'DD:MM:YYYY',
-      ).subtract('d', 1)
+      const start = moment(timelines[0].schedule[0].from, 'DD:MM:YYYY')
       const end = moment(
         timelines[0].schedule[timelines[0].schedule.length - 1].to,
         'DD:MM:YYYY',
-      ).add('d', 30)
+      ).add('d', 5)
       const dur = moment.duration(end.diff(start)).asDays()
 
       return [
@@ -112,11 +109,7 @@ export const TimelinesTable: FC<ITimelinesTableProps> = ({
           <div className={styles.headerTimeline}>{timeline}</div>
 
           {timelines.map(({ schedule, url }, i) => (
-            <div
-              key={schedule.toString() + i}
-              onClick={() => goTo(url)}
-              className={styles.timeline}
-            >
+            <div key={schedule.toString() + i} className={styles.timeline}>
               {schedule.map(({ status, from, to }, i) => (
                 <TimelinesTooltip status={status} key={from + i}>
                   <div

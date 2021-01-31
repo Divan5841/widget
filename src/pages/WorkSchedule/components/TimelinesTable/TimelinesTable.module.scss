@@ -14,7 +14,7 @@ $w_timeline_call: 42px;
     display: block;
     content: '';
     bottom: 0;
-    left: calc(#{$w_first_call} + 71px);
+    left: calc(#{$w_first_call} + 45px);
     z-index: 10;
 
     width: 3px;
@@ -70,7 +70,6 @@ $w_timeline_call: 42px;
 
   .timeline {
     @extend .row;
-    @extend .clickable;
 
     display: grid;
     grid-auto-flow: column;
@@ -79,7 +78,7 @@ $w_timeline_call: 42px;
 
     width: max-content;
 
-    padding: 10px 26px;
+    padding: 10px 0;
 
     .item {
       background-color: $gray1;
@@ -96,16 +95,15 @@ $w_timeline_call: 42px;
 
   .headerTimeline {
     @extend .timeline;
-    @extend .noClickable;
 
     position: sticky;
     top: 0;
-    z-index: 4;
+    z-index: 5;
 
     padding: 0 0 0 26px;
     height: 30px;
 
-    transform: translateX(-23px);
+    transform: translateX(-49px);
     background-color: white;
 
     & > div {
@@ -118,6 +116,7 @@ $w_timeline_call: 42px;
 
     &Empty {
       @extend .headerTimeline;
+      @extend .noClickable;
 
       position: sticky;
       top: 0;
