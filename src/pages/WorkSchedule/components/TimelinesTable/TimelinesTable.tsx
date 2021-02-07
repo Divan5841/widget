@@ -1,13 +1,14 @@
 import React, { FC, useCallback, useEffect, useMemo } from 'react'
+import { Table } from 'antd'
+import { ColumnsType } from 'antd/lib/table/interface'
 import clsx from 'clsx'
 import moment from 'moment'
 
 import { TimelinesTooltip } from './TimelinesTooltip/TimelinesTooltip'
 import { getRangeArray, OneTime, TimelineIcon } from '../../../../utils'
-import { Timeline } from '../../store'
+import { Schedule, Timeline } from '../../store'
 import styles from './TimelinesTable.module.scss'
 
-const TIMELINE_ID = 'timelineId'
 const TIMELINE_CALL_WIDTH = 48
 
 export type TimelinesType = 'day' | 'year'
@@ -77,7 +78,7 @@ export const TimelinesTable: FC<ITimelinesTableProps> = ({
   }, [])
 
   useEffect(() => {
-    const timeline = document.getElementById(TIMELINE_ID)
+    const timeline = document.querySelector('.ant-table-body')
 
     if (timeline && dateTimeline) {
       const start = moment(timelines[0].schedule[0].from, 'DD:MM:YYYY')
@@ -88,42 +89,57 @@ export const TimelinesTable: FC<ITimelinesTableProps> = ({
     }
   }, [dateTimeline, timelines])
 
+  const data = timelines.map(({ url, schedule, name, type }, i) => ({
+    key: name + i,
+    label: [name, url],
+    timeline: schedule,
+  }))
+
+  const columns: ColumnsType<any> = [
+    {
+      title: '',
+      dataIndex: 'label',
+      fixed: 'left',
+      render: ([name, url]) => (
+        <div onClick={() => goTo(url)} className={styles.label}>
+          {name}
+        </div>
+      ),
+    },
+
+    {
+      title: <div className={styles.headerTimeline}>{timeline}</div>,
+      dataIndex: 'timeline',
+      width: 'max-content',
+      render: (schedule: Schedule[]) => (
+        <div className={styles.timeline}>
+          {schedule.map(({ status, from, to }, i) => (
+            <TimelinesTooltip status={status} key={from + i}>
+              <div
+                className={clsx(styles.item, {
+                  [styles.itemWorking]: status === 'opened',
+                  [styles.itemLunch]: status === 'lunch',
+                })}
+                style={getStyles(from, to)}
+              />
+            </TimelinesTooltip>
+          ))}
+        </div>
+      ),
+    },
+  ]
+
   return (
-    <div className={styles.container}>
-      <div className={styles.table} id={TIMELINE_ID}>
-        <div>
-          <div className={styles.headerTimelineEmpty} />
-
-          {timelines.map(({ name, url }, i) => (
-            <div
-              key={name + i}
-              onClick={() => goTo(url)}
-              className={styles.label}
-            >
-              {name}
-            </div>
-          ))}
-        </div>
-
-        <div>
-          <div className={styles.headerTimeline}>{timeline}</div>
-
-          {timelines.map(({ schedule, url }, i) => (
-            <div key={schedule.toString() + i} className={styles.timeline}>
-              {schedule.map(({ status, from, to }, i) => (
-                <TimelinesTooltip status={status} key={from + i}>
-                  <div
-                    className={clsx(styles.item, {
-                      [styles.itemWorking]: status === 'opened',
-                      [styles.itemLunch]: status === 'lunch',
-                    })}
-                    style={getStyles(from, to)}
-                  />
-                </TimelinesTooltip>
-              ))}
-            </div>
-          ))}
-        </div>
+    <div>
+      <div className={styles.timelineUpright}>
+        <Table
+          columns={columns}
+          dataSource={data}
+          scroll={{ x: true, y: '380px' }}
+          sticky
+          pagination={false}
+          className={styles.table}
+        />
       </div>
     </div>
   )

@@ -17,6 +17,11 @@ const MAIN_TAB_KEY = {
   ALL_YEAR: 'весь год',
 }
 
+enum TimelineType {
+  Fun = 'Fun',
+  Service = 'Service',
+}
+
 const TODAY = new Date(moment().startOf('d').toISOString())
 
 export const WorkSchedule: FC = () => {
@@ -24,6 +29,9 @@ export const WorkSchedule: FC = () => {
   const [isShowCalendarIcon, setIsShowCalendarIcon] = useState(false)
   const [isShowButtonShow, setIsShowButtonShow] = useState(false)
 
+  const [timelineType, setTimelineType] = useState<TimelineType>(
+    TimelineType.Service,
+  )
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(TODAY)
   const [dateTimeline, setDateTimeline] = useState<Date | undefined>(TODAY)
   const [timelinesType, setTimelinesType] = useState<TimelinesType>('day')
@@ -88,7 +96,8 @@ export const WorkSchedule: FC = () => {
         </Tabs>
 
         <Tabs
-          destroyInactiveTabPane
+          // @ts-ignore
+          onChange={setTimelineType}
           className={styles.tabs}
           tabBarExtraContent={{
             right: isShowCalendarIcon ? (
@@ -102,34 +111,35 @@ export const WorkSchedule: FC = () => {
             ),
           }}
         >
-          <Tabs.TabPane tab="СЕРВИСЫ" key="services">
-            {isLoading ? (
-              <Loader className={styles.loader} />
-            ) : isEmpty(services) || !services ? (
-              <Empty />
-            ) : (
-              <TimelinesTable
-                timelines={services}
-                type={timelinesType}
-                dateTimeline={dateTimeline}
-              />
-            )}
-          </Tabs.TabPane>
-
-          <Tabs.TabPane tab="РАЗВЛЕЧЕНИЯ" key="entertainments">
-            {isLoading ? (
-              <Loader className={styles.loader} />
-            ) : isEmpty(fun) || !fun ? (
-              <Empty />
-            ) : (
-              <TimelinesTable
-                timelines={fun}
-                type={timelinesType}
-                dateTimeline={dateTimeline}
-              />
-            )}
-          </Tabs.TabPane>
+          <Tabs.TabPane tab="СЕРВИСЫ" key={TimelineType.Service} />
+          <Tabs.TabPane tab="РАЗВЛЕЧЕНИЯ" key={TimelineType.Fun} />
         </Tabs>
+
+        {timelineType === TimelineType.Service &&
+          (isLoading ? (
+            <Loader className={styles.loader} />
+          ) : isEmpty(services) || !services ? (
+            <Empty />
+          ) : (
+            <TimelinesTable
+              timelines={services}
+              type={timelinesType}
+              dateTimeline={dateTimeline}
+            />
+          ))}
+
+        {timelineType === TimelineType.Fun &&
+          (isLoading ? (
+            <Loader className={styles.loader} />
+          ) : isEmpty(fun) || !fun ? (
+            <Empty />
+          ) : (
+            <TimelinesTable
+              timelines={fun}
+              type={timelinesType}
+              dateTimeline={dateTimeline}
+            />
+          ))}
 
         <div className={styles.mark}>
           *Данные о работе являются предварительными и могут быть изменены в
