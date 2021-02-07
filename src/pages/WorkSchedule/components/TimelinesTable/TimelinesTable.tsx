@@ -102,7 +102,7 @@ export const TimelinesTable: FC<ITimelinesTableProps> = ({
       fixed: 'left',
       render: ([name, url]) => (
         <div onClick={() => goTo(url)} className={styles.label}>
-          {name}
+          <span>{name}</span>
         </div>
       ),
     },

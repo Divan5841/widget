@@ -52,15 +52,17 @@ $w_timeline_call: 42px;
 
   width: $w_first_call;
 
-  padding-left: 12px;
+  padding-left: 8px;
   padding-right: 4px;
 
   font-weight: 700;
   color: $font_blue;
 
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .timeline {
