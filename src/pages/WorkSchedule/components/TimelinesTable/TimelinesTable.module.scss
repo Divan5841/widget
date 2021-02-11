@@ -12,7 +12,7 @@ $w_timeline_call: 42px;
     display: block;
     content: '';
     bottom: 0;
-    left: calc(#{$w_first_call} + 45px);
+    left: calc(#{$w_first_call} + 68px);
     z-index: 10;
 
     width: 3px;
@@ -75,7 +75,7 @@ $w_timeline_call: 42px;
 
   width: max-content;
 
-  padding: 10px 0;
+  padding: 10px 0 10px 24px;
 
   .item {
     background-color: $gray1;
