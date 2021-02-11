@@ -130,12 +130,12 @@ export const TimelinesTable: FC<ITimelinesTableProps> = ({
   ]
 
   return (
-    <div>
+    <div className={styles.tableOverflow}>
       <div className={styles.timelineUpright}>
         <Table
           columns={columns}
           dataSource={data}
-          scroll={{ x: true, y: '380px' }}
+          scroll={{ x: true }}
           sticky
           pagination={false}
           className={styles.table}

@@ -4,6 +4,11 @@ $h_row: 50px;
 $w_first_call: 140px;
 $w_timeline_call: 42px;
 
+.tableOverflow {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
 .timelineUpright {
   position: relative;
 
