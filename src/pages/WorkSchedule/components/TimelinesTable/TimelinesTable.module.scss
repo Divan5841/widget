@@ -40,6 +40,10 @@ $w_timeline_call: 42px;
   :global .ant-table-body {
     scroll-behavior: smooth;
   }
+
+  :global .ant-table-sticky-scroll {
+    display: none;
+  }
 }
 
 .row {
